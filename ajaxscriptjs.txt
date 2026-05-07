@@ -1,0 +1,46 @@
+document.getElementById("registerForm").addEventListener("submit", function(event){
+
+    event.preventDefault();
+
+    // Get Form Data
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    // Create User Object
+    let user = {
+        name: name,
+        email: email,
+        password: password
+    };
+
+    // AJAX Request
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "https://jsonplaceholder.typicode.com/posts", true);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function(){
+
+        if(xhr.status == 201){
+
+            // Store Data in Local Storage
+            localStorage.setItem("userData", JSON.stringify(user));
+
+            document.getElementById("message").innerHTML =
+                "<span class='text-success'>Registration Successful!</span>";
+
+            // Reset Form
+            document.getElementById("registerForm").reset();
+        }
+        else{
+            document.getElementById("message").innerHTML =
+                "<span class='text-danger'>Registration Failed!</span>";
+        }
+    };
+
+    // Send Data
+    xhr.send(JSON.stringify(user));
+
+});
